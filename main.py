@@ -1,4 +1,7 @@
 import random
+from colorama import Fore, Style, init
+
+init(autoreset=True)
 
 MAX_LINES = 3
 MAX_BET = 100
@@ -58,13 +61,12 @@ def get_slot_machine_spin(rows, cols, symbols):
 
 
 def print_slot_machine(columns):
+    print(Fore.YELLOW + "\n+---+---+---+")
     for row in range(len(columns[0])):
+        print(Fore.YELLOW + "|", end="")
         for i, column in enumerate(columns):
-            if i != len(columns) - 1:
-                print(column[row], end=" | ")
-            else:
-                print(column[row], end="")
-        print()
+            print(Fore.GREEN + f" {column[row]} ", end=Fore.YELLOW + "|")
+        print(Fore.YELLOW + "\n+---+---+---+")
 
 
 def deposit() -> object:
@@ -127,22 +129,20 @@ def spin(balance):
     slots = get_slot_machine_spin(ROWS, COLS, symbols_count)
     print_slot_machine(slots)
     winnings, winning_lines = check_winnings(slots, lines, bet, symbols_value)
-    print(f"You won ${winnings}!")
-    print("You won on lines: ", *winning_lines)
+    print(Fore.CYAN + f"\nYou won ${winnings}!")
+    print(Fore.CYAN + "You won on lines: ", *winning_lines)
 
     return winnings - total_bet
-
 
 def main():
     balance = deposit()
     while True:
-        print(f"Current Balance: ${balance}")
+        print(Fore.GREEN + f"Current Balance: ${balance}\n")
         spin_in = input("Press 'Enter' to spin(q to quit)...")
         if spin_in.lower() == 'q':
             break
         balance += spin(balance)
-    print(f"Balance: ${balance}")
-
+    print(Fore.GREEN + f"Balance: ${balance}")
 
 if __name__ == "__main__":
     main()
